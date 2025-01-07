@@ -26,6 +26,7 @@ Window::Window()
 	wndClass.hIcon = LoadIcon(NULL, IDI_WINLOGO);
 	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wndClass.lpfnWndProc = WindowProc;
+	wndClass.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
 
 	RegisterClass(&wndClass);
 

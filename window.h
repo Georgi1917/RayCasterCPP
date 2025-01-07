@@ -11,6 +11,7 @@ public:
 	~Window();
 
 	bool ProcessMessages();
+	HWND GetWindowHandle() const { return hWnd; };
 private:
 	HINSTANCE hInstance;
 	HWND hWnd;
