@@ -1,5 +1,7 @@
 #include "window.h"
 
+int WIDTH{ 640 }, HEIGHT{ 480 };
+
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) 
@@ -32,13 +34,11 @@ Window::Window()
 
 	DWORD style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
-	int width{ 640 }, height{ 480 };
-
 	RECT rect;
 	rect.left = 250;
 	rect.top = 250;
-	rect.right = rect.left + width;
-	rect.bottom = rect.top + height;
+	rect.right = rect.left + WIDTH;
+	rect.bottom = rect.top + HEIGHT;
 
 	AdjustWindowRect(&rect, style, false);
 
@@ -83,4 +83,18 @@ bool Window::ProcessMessages()
 	}
 
 	return true;
+}
+
+int Window::GetWindowWidth()
+{
+
+	return WIDTH;
+
+}
+
+int Window::GetWindowHeight()
+{
+
+	return HEIGHT;
+
 }

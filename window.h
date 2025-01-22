@@ -12,6 +12,8 @@ public:
 
 	bool ProcessMessages();
 	HWND GetWindowHandle() const { return hWnd; };
+	int GetWindowWidth();
+	int GetWindowHeight();
 private:
 	HINSTANCE hInstance;
 	HWND hWnd;
