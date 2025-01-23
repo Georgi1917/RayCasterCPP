@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono>
+#include <vector>
 #include "window.h"
 using namespace std;
 
@@ -41,17 +43,36 @@ int main()
 	map += L"#..............#";
 	map += L"################";
 
+	auto tp1 = chrono::system_clock::now();
+	auto tp2 = chrono::system_clock::now();
+
+	int wWidth = pWindow->GetWindowWidth();
+	int wHeight = pWindow->GetWindowHeight();
+	HWND wHwnd = pWindow->GetWindowHandle();
+
+	vector<uint32_t> backBuffer(wWidth * wHeight, RGB(0, 0, 0));
+
+	fill(backBuffer.begin(), backBuffer.end(), RGB(0, 0, 0));
+
 	while (running)
 	{
+
 		if (!pWindow->ProcessMessages())
 		{
 			cout << "Closing Window\n";
 			running = false;
 		}
 
-		int wWidth = pWindow->GetWindowWidth();
-		int wHeight = pWindow->GetWindowHeight();
-		HWND wHwnd = pWindow->GetWindowHandle();
+		tp2 = chrono::system_clock::now();
+		chrono::duration<float> elapsedTime = tp2 - tp1;
+		tp1 = tp2;
+		float fElapsedTime = elapsedTime.count();
+
+		if (GetAsyncKeyState('A') & 0x8000)
+			playerAngle -= 0.1f * fElapsedTime;
+
+		if (GetAsyncKeyState('D') & 0x8000)
+			playerAngle += 0.1f * fElapsedTime;
 
 		for (int i = 0; i < wWidth; i++)
 		{
@@ -94,31 +115,38 @@ int main()
 			int ceilling = (float)(wHeight / 2.0f) - wHeight / ((float)distanceToWall);
 			int floor = wHeight - ceilling;
 
-			HDC hdc = GetDC(wHwnd);
-
 			for (int y = 0; y < wHeight; y++)
 			{
 
 				if (y < ceilling)
 				{
-					SetPixel(hdc, i, y, RGB(0, 0, 0));
+					backBuffer[y * wWidth + i] = RGB(0, 0, 0);
 				}
 				else if (y >= ceilling && y <= floor)
 				{
-					SetPixel(hdc, i, y, RGB(128, 128, 128));
+					backBuffer[y * wWidth + i] = RGB(128, 128, 128);
 				}
 				else
 				{
-					SetPixel(hdc, i, y, RGB(0, 0, 0));
+					backBuffer[y * wWidth + i] = RGB(0, 0, 0);
 				}
 
 			}
 		
+			HDC hdc = GetDC(wHwnd);
+			BITMAPINFO bmi = { 0 };
+			bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+			bmi.bmiHeader.biWidth = wWidth;
+			bmi.bmiHeader.biHeight = -wHeight;
+			bmi.bmiHeader.biPlanes = 1;
+			bmi.bmiHeader.biBitCount = 32;
+			bmi.bmiHeader.biCompression = BI_RGB;
+
+			StretchDIBits(hdc, 0, 0, wWidth, wHeight, 0, 0, wWidth, wHeight, backBuffer.data(), &bmi, DIB_RGB_COLORS, SRCCOPY);
+
 			ReleaseDC(wHwnd, hdc);
 
 		}
-
-		Sleep(16);
 
 	}
 
