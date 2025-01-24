@@ -1,4 +1,4 @@
 ﻿  main.cpp
 E:\CPP_Projects\RayCasterCPP\main.cpp(18,20): warning C4305: 'initializing': truncation from 'double' to 'float'
-E:\CPP_Projects\RayCasterCPP\main.cpp(115,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+E:\CPP_Projects\RayCasterCPP\main.cpp(131,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   RayCasterCPP.vcxproj -> E:\CPP_Projects\RayCasterCPP\x64\Debug\RayCasterCPP.exe

@@ -69,10 +69,26 @@ int main()
 		float fElapsedTime = elapsedTime.count();
 
 		if (GetAsyncKeyState('A') & 0x8000)
-			playerAngle -= 0.1f * fElapsedTime;
+			playerAngle -= 0.5f * fElapsedTime;
 
 		if (GetAsyncKeyState('D') & 0x8000)
-			playerAngle += 0.1f * fElapsedTime;
+			playerAngle += 0.5f * fElapsedTime;
+
+		if (GetAsyncKeyState('W') & 0x8000)
+		{
+
+			playerRow += sinf(playerAngle) * 5.0f * fElapsedTime;
+			playerCol += cosf(playerAngle) * 5.0f * fElapsedTime;
+
+		}
+
+		if (GetAsyncKeyState('S') & 0x8000)
+		{
+
+			playerRow -= sinf(playerAngle) * 5.0f * fElapsedTime;
+			playerCol -= cosf(playerAngle) * 5.0f * fElapsedTime;
+
+		}
 
 		for (int i = 0; i < wWidth; i++)
 		{
